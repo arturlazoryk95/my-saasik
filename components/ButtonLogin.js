@@ -1,18 +1,17 @@
 import Link from "next/link";
 
-const ButtonLogin = ({ hasLoggedIn, name, children }) => {
+const ButtonLogin = ({ hasLoggedIn, name }) => {
   // console.log(props);
-  console.log(hasLoggedIn);
-  console.log(name);
+  // console.log(hasLoggedIn);
+  // console.log(name);
   if (hasLoggedIn === true) {
     return (
-      <Link href="/dashboard">
+      <Link href="/dashboard" className="btn btn-primary">
         Go to Dashboard :) {name}
-        {children}
       </Link>
     );
   } else {
-    return <button>Log in please. Yes, do it first. {name}</button>;
+    return <button className="btn btn-secondary">Log in please.</button>;
   }
 };
 
