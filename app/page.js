@@ -1,9 +1,13 @@
 import ButtonLogin from "@/components/ButtonLogin";
+import NormalButton from "@/components/NormalButton";
+import TickSvg from "@/components/TickSvg";
 
 export default function Home() {
   const name = "Archik";
   const isLoggedIn = true;
 
+  let greeting = `Hello ${isLoggedIn ? name : "there"}`;
+  console.log(greeting);
   return (
     <main>
       {/* HEADER  */}
@@ -41,16 +45,103 @@ export default function Home() {
           <h2 className="text-3xl lg:text-4xl font-extrabold mb-12 text-center">
             A pricing that adapts to your needs
           </h2>
-          <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
-            <div className="flex gap-2 items-baseline">
-              <div className="font-black text-4xl">$100</div>
-              <div className="font-medium uppercase opacity-60">/month</div>
+          <div className="flex gap-4">
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+              <div className="flex gap-2 items-baseline mb-4">
+                <div className="font-black text-4xl">$100</div>
+                <div className="font-medium uppercase opacity-60">/month</div>
+              </div>
+              <ul>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  24/7 support
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Admin Dashboard
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Premium features
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Lifetime updates
+                </li>
+                <li className="mt-4">
+                  <NormalButton>Explore more</NormalButton>
+                </li>
+              </ul>
             </div>
-            <ul>
-              <li>24/7 support</li>
-              <li>Admin dashboard</li>
-            </ul>
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+              <div className="flex gap-2 items-baseline mb-4">
+                <div className="font-black text-4xl">$800</div>
+                <div className="font-medium uppercase opacity-60">/month</div>
+              </div>
+              <ul>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  24/7 support
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Admin Dashboard
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Premium features
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Lifetime updates
+                </li>
+                <li className="mt-4">
+                  <NormalButton extraStyle={"w-full"}>
+                    Explore more
+                  </NormalButton>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+              <div className="flex gap-2 items-baseline mb-4">
+                <div className="font-black text-4xl">$1,000</div>
+                <div className="font-medium uppercase opacity-60">/month</div>
+              </div>
+              <ul>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  24/7 support
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Admin Dashboard
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Premium features
+                </li>
+                <li className="flex gap-2 items-center">
+                  <TickSvg />
+                  Lifetime updates
+                </li>
+                <li className="mt-4">
+                  <NormalButton>Explore more</NormalButton>
+                </li>
+              </ul>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-base-200">
+        <div className="py-32 px-8 max-w-3xl mx-auto">
+          <p className="text-sm uppercase font-medium text-center text-primary mb-4">
+            FAQ
+          </p>
+          <h2 className="text-3xl lg:text-4xl font-extrabold mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
         </div>
       </section>
     </main>
