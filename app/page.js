@@ -1,4 +1,5 @@
 import ButtonLogin from "@/components/ButtonLogin";
+import FAQListItems from "@/components/FAQListItems";
 import NormalButton from "@/components/NormalButton";
 import TickSvg from "@/components/TickSvg";
 
@@ -6,8 +7,23 @@ export default function Home() {
   const name = "Archik";
   const isLoggedIn = true;
 
-  let greeting = `Hello ${isLoggedIn ? name : "there"}`;
-  console.log(greeting);
+  const questions = [
+    {
+      question: "Are there any refunds?",
+      answer: "Of course, within 30 days you can return.",
+    },
+    {
+      question: "What lifetime means?",
+      answer:
+        "No more payments :). One off payment that will be enough for a lifetime.",
+    },
+    {
+      question: "How does the affiliate program work?",
+      answer:
+        "You get a link and if someone buys through this link, you get $51.",
+    },
+  ];
+
   return (
     <main>
       {/* HEADER  */}
@@ -15,8 +31,12 @@ export default function Home() {
         <div className="max-w-3xl flex mx-auto justify-between items-center px-8 py-2">
           <div className="font-bold">my-saasik</div>
           <div className="space-x-4 max-md:hidden">
-            <a className="link link-hover">Pricing</a>
-            <a className="link link-hover">FAQ</a>
+            <a className="link link-hover" href="#pricing">
+              Pricing
+            </a>
+            <a className="link link-hover" href="#FAQ">
+              FAQ
+            </a>
           </div>
           <div>
             <ButtonLogin />
@@ -37,7 +57,7 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section className="bg-base-200">
+      <section className="bg-base-200" id="pricing">
         <div className="py-32 px-8 max-w-3xl mx-auto">
           <p className="text-sm uppercase font-medium text-center text-primary mb-4">
             Pricing
@@ -134,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-base-200">
+      <section className="bg-base-200" id="FAQ">
         <div className="py-32 px-8 max-w-3xl mx-auto">
           <p className="text-sm uppercase font-medium text-center text-primary mb-4">
             FAQ
@@ -142,6 +162,11 @@ export default function Home() {
           <h2 className="text-3xl lg:text-4xl font-extrabold mb-12 text-center">
             Frequently Asked Questions
           </h2>
+          <ul className="max-w-lg mx-auto">
+            {questions.map((qa) => (
+              <FAQListItems key={qa.question} qa={qa} />
+            ))}
+          </ul>
         </div>
       </section>
     </main>
