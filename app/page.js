@@ -2,6 +2,8 @@ import ButtonLogin from "@/components/ButtonLogin";
 import FAQListItems from "@/components/FAQListItems";
 import NormalButton from "@/components/NormalButton";
 import TickSvg from "@/components/TickSvg";
+import Image from "next/image";
+import productDemo from "@/app/productDemo.jpeg";
 
 export default function Home() {
   const name = "Archik";
@@ -28,7 +30,7 @@ export default function Home() {
     <main>
       {/* HEADER  */}
       <section className="bg-base-200">
-        <div className="max-w-3xl flex mx-auto justify-between items-center px-8 py-2">
+        <div className="max-w-5xl flex mx-auto justify-between items-center px-8 py-2">
           <div className="font-bold">my-saasik</div>
           <div className="space-x-4 max-md:hidden">
             <a className="link link-hover" href="#pricing">
@@ -45,15 +47,23 @@ export default function Home() {
       </section>
 
       {/* HERO SECTION */}
-      <section className="px-8 text-center py-32 max-w-3xl mx-auto">
-        <h1 className="text-4xl lg:text-5xl font-extrabold mb-6">
-          Collect customer feedback to build better products 🚀
-        </h1>
-        <div className="mb-10 opacity-80">
-          Create a feedback boards in minutes, not days. Prioritize features and
-          develop products in a way your customers truly desire.
+      <section className="px-8 text-center lg:text-left py-32 max-w-5xl mx-auto flex flex-col lg:flex-row gap-14 items-center lg:items-start">
+        <Image
+          src={productDemo}
+          alt="Product demo"
+          className="w-96 rounded-xl"
+        />
+
+        <div>
+          <h1 className="text-4xl lg:text-5xl font-extrabold mb-6">
+            Collect customer feedback to build better products 🚀
+          </h1>
+          <div className="mb-10 opacity-80">
+            Create a feedback boards in minutes, not days. Prioritize features
+            and develop products in a way your customers truly desire.
+          </div>
+          <ButtonLogin hasLoggedIn={isLoggedIn} name={name} />
         </div>
-        <ButtonLogin hasLoggedIn={isLoggedIn} name={name} />
       </section>
 
       {/* PRICING */}
