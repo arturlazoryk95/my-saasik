@@ -4,11 +4,10 @@ import NormalButton from "@/components/NormalButton";
 import TickSvg from "@/components/TickSvg";
 import Image from "next/image";
 import productDemo from "@/app/productDemo.jpeg";
+import { auth } from "@/auth";
+import ButtonLogout from "@/components/ButtonLogout";
 
-export default function Home() {
-  const name = "Archik";
-  const isLoggedIn = true;
-
+export default async function Home() {
   const questions = [
     {
       question: "Are there any refunds?",
@@ -25,6 +24,8 @@ export default function Home() {
         "You get a link and if someone buys through this link, you get $51.",
     },
   ];
+
+  const session = await auth();
 
   return (
     <main>
@@ -62,7 +63,7 @@ export default function Home() {
             Create a feedback boards in minutes, not days. Prioritize features
             and develop products in a way your customers truly desire.
           </div>
-          <ButtonLogin hasLoggedIn={isLoggedIn} name={name} />
+          {session ? <ButtonLogout /> : <ButtonLogin session={session} />}
         </div>
       </section>
 
