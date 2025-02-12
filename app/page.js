@@ -6,6 +6,7 @@ import Image from "next/image";
 import productDemo from "@/app/productDemo.jpeg";
 import { auth } from "@/auth";
 import ButtonLogout from "@/components/ButtonLogout";
+import SexyButton from "@/components/SexyButton";
 
 export default async function Home() {
   const questions = [
@@ -36,6 +37,9 @@ export default async function Home() {
           <div className="space-x-4 max-md:hidden">
             <a className="link link-hover" href="#pricing">
               Pricing
+            </a>
+            <a className="link link-hover" href="#coding">
+              Coding
             </a>
             <a className="link link-hover" href="#FAQ">
               FAQ
@@ -164,8 +168,28 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* CODING  */}
+      <section id="coding" className="bg-base-100">
+        <div className="py-32 px-8 max-w-7xl mx-auto">
+          <p className="text-sm uppercase font-medium text-center text-primary mb-4">
+            Coding
+          </p>
+          <div className="p-8 m-10 mx-auto rounded-3xl flex justify-center items-start gap-4">
+            <iframe
+              width="864"
+              height="534"
+              seamless
+              src="https://docs.google.com/spreadsheets/d/e/2PACX-1vThXhRhnGq0w5ejZiMB_GRwDK0SfDZrhtu45qOeQtWeQrKA9N7YHieycAXrYJmGZBQSESbBGcBknjf1/pubchart?oid=1873781455&amp;format=interactive"
+            ></iframe>
+            <div>
+              <SexyButton />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
-      <section className="bg-base-100" id="FAQ">
+      <section className="bg-base-200" id="FAQ">
         <div className="py-32 px-8 max-w-3xl mx-auto">
           <p className="text-sm uppercase font-medium text-center text-primary mb-4">
             FAQ
