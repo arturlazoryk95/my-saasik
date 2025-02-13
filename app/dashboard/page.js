@@ -30,7 +30,7 @@ export default async function Dashboard() {
             {user.boards.map((board) => {
               return (
                 <div className="bg-base-100 rounded-3xl p-6" key={board._id}>
-                  {board.name}
+                  {board.name} | {board._id}
                 </div>
               );
             })}
