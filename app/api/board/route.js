@@ -9,7 +9,7 @@ export async function POST(req) {
     const body = await req.json();
     if (!body.name) {
       return NextResponse.json(
-        { error: "The board is name required" },
+        { error: "The board's name is required" },
         { status: 400 }
       );
     }

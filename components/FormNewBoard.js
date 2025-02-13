@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const FormNewBoard = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,10 +19,16 @@ const FormNewBoard = () => {
       const data = await axios.post("/api/board", {
         name: name,
       });
+
       // console.log(data);
       setName("");
+      router.refresh();
+      toast.success("Added 🙋");
     } catch (e) {
       // Print error
+      const errorMessage =
+        e.response?.data?.error || e.message || "Something went wrong 😞";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

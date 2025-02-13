@@ -3,6 +3,7 @@ import FormNewBoard from "@/components/FormNewBoard";
 import { auth } from "@/auth";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
+import Board from "@/models/Board";
 
 async function getUser() {
   const session = await auth();
@@ -19,8 +20,22 @@ export default async function Dashboard() {
         <ButtonLogout />
       </section>
 
-      <section className="max-w-5xl mx-auto py-12 px-5">
+      <section className="max-w-5xl mx-auto py-12 px-5 space-y-12">
         <FormNewBoard />
+        <div>
+          <h1 className="font-extrabold text-xl mb-4">
+            My boards {user.boards.length}:
+          </h1>
+          <ul className="space-y-4">
+            {user.boards.map((board) => {
+              return (
+                <div className="bg-base-100 rounded-3xl p-6" key={board._id}>
+                  {board.name}
+                </div>
+              );
+            })}
+          </ul>
+        </div>
       </section>
     </main>
   );
