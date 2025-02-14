@@ -3,10 +3,11 @@ import FAQListItems from "@/components/FAQListItems";
 import NormalButton from "@/components/NormalButton";
 import TickSvg from "@/components/TickSvg";
 import Image from "next/image";
-import productDemo from "@/app/productDemo.jpeg";
+import productDemo from "@/app/public/productDemo.jpeg";
 import { auth } from "@/auth";
 import ButtonLogout from "@/components/ButtonLogout";
 import SexyButton from "@/components/SexyButton";
+import IconButton from "@/components/IconButton";
 
 export default async function Home() {
   const questions = [
@@ -33,7 +34,7 @@ export default async function Home() {
       {/* HEADER  */}
       <section className="bg-base-200">
         <div className="max-w-5xl flex mx-auto justify-between items-center px-8 py-2">
-          <div className="font-bold">my-saasik</div>
+          <IconButton />
           <div className="space-x-4 max-md:hidden">
             <a className="link link-hover" href="#pricing">
               Pricing
