@@ -5,6 +5,7 @@ import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 import Board from "@/models/Board";
 import Link from "next/link";
+import ButtonSavePdf from "@/components/ButtonSavePDF";
 
 async function getUser() {
   const session = await auth();
@@ -17,7 +18,8 @@ export default async function Dashboard() {
   const user = await getUser();
   return (
     <main className="bg-base-200 min-h-screen">
-      <section className="bg-base-100 px-5 py-3 flex justify-end">
+      <section className="bg-base-100 px-5 py-3 flex justify-end gap-2">
+        <ButtonSavePdf />
         <ButtonLogout />
       </section>
 

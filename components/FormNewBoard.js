@@ -42,6 +42,23 @@ const FormNewBoard = () => {
       {/* Title */}
       <p className="text-lg font-bold">Create new board!</p>
 
+      {/* My funny buttons */}
+      <div className="flex gap-2">
+        <button
+          className="btn btn-warning"
+          onClick={() => setName("Elo")}
+          type="button"
+        >
+          Elo
+        </button>
+        <button
+          className="btn btn-warning"
+          onClick={() => setName("Witam")}
+          type="button"
+        >
+          Witam
+        </button>
+      </div>
       {/* Form */}
       <label className="form-control w-full">
         <div className="label">
