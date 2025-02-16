@@ -66,7 +66,7 @@ export async function DELETE(req) {
     if (!session) {
       return NextResponse.json({ error: "Not authorized" }, { status: 401 });
     }
-    await connectMongo();
+    // await connectMongo();
 
     await Board.deleteOne({
       _id: boardId,
