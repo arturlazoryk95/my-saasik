@@ -19,6 +19,7 @@
     "motion": "^12.4.2",
     "next": "14.2.0",
     "next-auth": "^5.0.0-beta.25",
+    "pdfmake": "^0.2.18",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.5.1",

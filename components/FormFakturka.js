@@ -2,13 +2,15 @@
 
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
+
+import pdfMake, { vfs } from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.addVirtualFileSystem(pdfFonts);
 
 const FormFakturka = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    generateInvoicePDF();
+    generateInvoicePDF3();
     toast.success("Udało się!");
   };
 
@@ -28,177 +30,84 @@ const FormFakturka = () => {
     setter(event.target.value);
   };
 
-  // Generate PDF after form submission
-  const generateInvoicePDF = () => {
-    const doc = new jsPDF();
+  const generateInvoicePDF3 = () => {
+    const docDefinition = {
+      content: [
+        { text: "Faktura VAT", style: "header" },
 
-    // Add the title with a larger font
-    doc.setFontSize(24);
-    doc.setFont("helvetica", "bold");
-    doc.text(`Faktura VAT nr. ${numer_faktury}`, 105, 20, null, null, "center");
+        { text: "Dane Sprzedawcy", style: "subheader" },
+        { text: `Nazwa: ${nazwa_firmy}`, margin: [0, 2, 0, 2] },
+        { text: `NIP: ${nip_firmy}`, margin: [0, 2, 0, 10] },
 
-    // Add some space
-    doc.setFontSize(14);
-    doc.text(
-      "------------------------------------------------------------",
-      14,
-      30
-    );
+        { text: "Dane Kontrahenta", style: "subheader" },
+        { text: `Nazwa: ${nazwa_kontrahenta}`, margin: [0, 2, 0, 2] },
+        { text: `NIP: ${nip_kontrahenta}`, margin: [0, 2, 0, 10] },
 
-    // Header Section: Your company details
-    doc.setFont("helvetica", "normal");
-    doc.text(`NIP firmy: ${nip_firmy}`, 14, 40);
-    doc.text(`Nazwa firmy: ${nazwa_firmy}`, 14, 50);
+        { text: "Szczegóły Faktury", style: "subheader" },
+        { text: `Numer Faktury: ${numer_faktury}`, margin: [0, 2, 0, 2] },
+        { text: `Data Wystawienia: ${data_faktury}`, margin: [0, 2, 0, 10] },
 
-    // Contractor's details section
-    doc.text(`NIP kontrahenta: ${nip_kontrahenta}`, 14, 65);
-    doc.text(`Nazwa kontrahenta: ${nazwa_kontrahenta}`, 14, 75);
+        {
+          style: "tableExample",
+          table: {
+            widths: ["*", "auto", "auto", "auto"],
+            body: [
+              [
+                { text: "Usługa", style: "tableHeader" },
+                { text: "Kwota Netto", style: "tableHeader" },
+                { text: "Stawka VAT", style: "tableHeader" },
+                { text: "Kwota Brutto", style: "tableHeader" },
+              ],
+              [
+                nazwa_uslugi,
+                kwota_netto,
+                `${parseFloat(stawka_vat) * 100}%`,
+                (
+                  parseFloat(kwota_netto) *
+                  (1 + parseFloat(stawka_vat))
+                ).toFixed(2), // Obliczona kwota brutto
+              ],
+            ],
+          },
+          layout: "lightHorizontalLines",
+        },
 
-    // Invoice details section
-    doc.text(
-      "------------------------------------------------------------",
-      14,
-      90
-    );
-    doc.text("Dane faktury:", 14, 100);
-
-    // Use a table format for better readability of items (like a service)
-    doc.autoTable({
-      startY: 110,
-      head: [["Nazwa serwisu", "Kwota netto", "Stawka VAT", "Kwota brutto"]],
-      body: [
-        [
-          nazwa_uslugi,
-          `${kwota_netto} PLN`,
-          `${(stawka_vat * 100).toFixed(2)}%`,
-          `${(parseFloat(kwota_netto) * (1 + parseFloat(stawka_vat))).toFixed(
-            2
-          )} PLN`,
-        ],
+        {
+          text: "Dziękujemy za współpracę!",
+          style: "footer",
+          margin: [0, 20, 0, 0],
+        },
       ],
-      theme: "grid",
-      headStyles: { fillColor: [41, 128, 185], textColor: [255, 255, 255] },
-      bodyStyles: { textColor: [50, 50, 50] },
-      margin: { top: 30, left: 14, right: 14 },
-    });
-
-    // Calculate gross total
-    const totalGross = (
-      parseFloat(kwota_netto) *
-      (1 + parseFloat(stawka_vat))
-    ).toFixed(2);
-
-    // Add total value
-    doc.text(
-      "------------------------------------------------------------",
-      14,
-      doc.lastAutoTable.finalY + 10
-    );
-    doc.text(
-      `Suma brutto: ${totalGross} PLN`,
-      14,
-      doc.lastAutoTable.finalY + 20
-    );
-
-    // Footer Section (Invoice date)
-    doc.text(
-      "------------------------------------------------------------",
-      14,
-      doc.lastAutoTable.finalY + 30
-    );
-    doc.text(
-      `Data faktury: ${data_faktury}`,
-      14,
-      doc.lastAutoTable.finalY + 40
-    );
-
-    // Add page number at the bottom (if required)
-    doc.text(`Page ${doc.internal.getNumberOfPages()}`, 200, 290);
-
-    // Save the generated PDF
-    doc.save("invoice.pdf");
-  };
-
-  const generateInvoicePDF2 = () => {
-    // Initialize the PDF document
-    const doc = new jsPDF();
-
-    // Common styling elements
-    const margins = {
-      left: 20,
-      top: 20,
-    };
-    const lineHeight = 10;
-
-    // Helper function to add text with consistent positioning
-    const addTextLine = (text, lineNumber, fontSize = 12, isBold = false) => {
-      doc.setFontSize(fontSize);
-      if (isBold) doc.setFont(undefined, "bold");
-      else doc.setFont(undefined, "normal");
-      doc.text(text, margins.left, margins.top + lineNumber * lineHeight);
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          alignment: "center",
+          margin: [0, 0, 0, 10],
+        },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [0, 10, 0, 5],
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: "white",
+          fillColor: "#4CAF50",
+          alignment: "center",
+        },
+        footer: {
+          fontSize: 12,
+          alignment: "center",
+          italics: true,
+        },
+      },
     };
 
-    // Generate invoice number based on date if not provided
-    const invoiceNumber = `INV/${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}/1`;
-
-    // Calculate totals - ensure numeric values
-    const numericKwotaNetto = parseFloat(kwota_netto) || 0;
-    const numericStawkaVat = parseFloat(stawka_vat) || 0;
-    const vatAmount = numericKwotaNetto * numericStawkaVat;
-    const grossAmount = numericKwotaNetto + vatAmount;
-
-    // Title and header
-    addTextLine("FAKTURA VAT", 0, 22, true);
-    addTextLine(`Nr: ${invoiceNumber}`, 2, 14);
-    addTextLine(
-      `Data wystawienia: ${
-        data_faktury || new Date().toISOString().slice(0, 10)
-      }`,
-      3,
-      14
-    );
-
-    // Seller details
-    addTextLine("Sprzedawca:", 5, 14, true);
-    addTextLine(`${nazwa_firmy || ""}`, 6);
-    addTextLine(`NIP: ${nip_firmy || ""}`, 7);
-    addTextLine(`Adres: ul. Przykładowa 1, 00-000 Warszawa`, 8); // Placeholder address
-
-    // Buyer details
-    addTextLine("Nabywca:", 10, 14, true);
-    addTextLine(`${nazwa_kontrahenta || ""}`, 11);
-    addTextLine(`NIP: ${nip_kontrahenta || ""}`, 12);
-    addTextLine(`Adres: ul. Odbiorcza 2, 00-000 Warszawa`, 13); // Placeholder address
-
-    // Service details
-    addTextLine("Szczegóły usługi:", 15, 14, true);
-    addTextLine(`Nazwa usługi: ${nazwa_uslugi || ""}`, 16);
-
-    // Financial details with formatting
-    addTextLine("Podsumowanie:", 18, 14, true);
-    addTextLine(`Kwota netto: ${numericKwotaNetto.toFixed(2)} PLN`, 19);
-    addTextLine(`Stawka VAT: ${(numericStawkaVat * 100).toFixed(0)}%`, 20);
-    addTextLine(`Kwota VAT: ${vatAmount.toFixed(2)} PLN`, 21);
-    addTextLine(`Suma brutto: ${grossAmount.toFixed(2)} PLN`, 22, 14, true);
-
-    // Footer
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text(
-      `Wygenerowano: ${new Date().toLocaleDateString()}`,
-      margins.left,
-      doc.internal.pageSize.height - 10
-    );
-
-    // Add payment details
-    addTextLine("Forma płatności: Przelew bankowy", 24, 12);
-    addTextLine(`Termin płatności: 14 dni od daty wystawienia`, 25, 12);
-
-    // Save the PDF
-    doc.save("faktura.pdf");
+    pdfMake
+      .createPdf(docDefinition)
+      .download(`${nazwa_kontrahenta}_${numer_faktury}.pdf`);
   };
 
   return (
