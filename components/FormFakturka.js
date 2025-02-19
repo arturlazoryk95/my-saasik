@@ -137,7 +137,7 @@ const FormFakturka = () => {
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="lg:flex space-y-5 gap-3">
       <form
         className="bg-base-300 p-8 rounded-3xl space-y-8 max-w-2xl mx-auto"
         onSubmit={handleSubmit}
