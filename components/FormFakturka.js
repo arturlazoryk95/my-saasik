@@ -6,71 +6,78 @@ import { useState } from "react";
 import pdfMake, { vfs } from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import { endOfMonth, subMonths, getISOWeek, format } from "date-fns";
+
 pdfMake.addVirtualFileSystem(pdfFonts);
+
+// 11:17
 
 const FormFakturka = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Robimy to ...");
     generateInvoicePDF();
-    toast.success("Udało się!");
+    toast.success("💵💵💵 Udało się! 💵💵💵");
   };
 
   const handleFillLagrima = (event) => {
     const weekNumber = getISOWeek(new Date());
     const lastMonthDate = endOfMonth(subMonths(new Date(), 1));
-    console.log("Wypełniamy ...");
-    event.preventDefault();
-    setNip("8381741305");
-    setNazwaKontrahenta("Lagrima Sp. z o. o.");
-    setNipFirmy("9671438426");
-    setNazwaUslugi(
-      "Software Management - HubSpot, websites, internal processes"
-    );
-    setNumerFaktury(`2025/${weekNumber}/1`);
-    setDataFaktury(format(lastMonthDate, "yyyy-MM-dd"));
-    setKwotaNetto(4000);
-    setStawkaVat(0.23);
-    setNazwaFirmy("Artur Lazoryk Business Advisory");
+    setFormData({
+      ...formData,
+      nip_kontrahenta: "8381741305",
+      nazwa_kontrahenta: "Lagrima Sp. z o. o.",
+      nazwa_uslugi:
+        "Software Management - HubSpot, websites, internal processes",
+      kwota_netto: 4000,
+      stawka_vat: 0.23,
+      data_faktury: format(lastMonthDate, "yyyy-MM-dd"),
+      nip_firmy: "9671438426",
+      nazwa_firmy: "Artur Lazoryk Business Advisory",
+      numer_faktury: `2025/${weekNumber}/1`,
+    });
   };
-  // Declare state for all the form fields
-  const [nip_kontrahenta, setNip] = useState("");
-  const [nazwa_kontrahenta, setNazwaKontrahenta] = useState("");
-  const [nazwa_uslugi, setNazwaUslugi] = useState("");
-  const [kwota_netto, setKwotaNetto] = useState("");
-  const [stawka_vat, setStawkaVat] = useState("");
-  const [data_faktury, setDataFaktury] = useState("");
-  const [nip_firmy, setNipFirmy] = useState(""); // "Mój NIP"
-  const [nazwa_firmy, setNazwaFirmy] = useState(""); // "Nazwa firmy"
-  const [numer_faktury, setNumerFaktury] = useState("");
 
-  // Handle input changes for all fields
-  const handleChange = (event, setter) => {
-    setter(event.target.value);
+  const [formData, setFormData] = useState({
+    nip_kontrahenta: "",
+    nazwa_kontrahenta: "",
+    nazwa_uslugi: "",
+    kwota_netto: "",
+    stawka_vat: "",
+    data_faktury: "",
+    nip_firmy: "",
+    nazwa_firmy: "",
+    numer_faktury: "",
+  });
+
+  const handleRealChange = (event) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const generateInvoicePDF = () => {
     const docDefinition = {
-      // header: [
-      //   {
-      //     image:
-      //       "http://www.hessionphysicaltherapy.ie/wp-content/uploads/2010/11/dummy-logo1.jpg",
-      //   },
-      // ],
       content: [
-        { text: "Faktura VAT", style: "header" },
+        { text: `Faktura VAT ${formData.numer_faktury}`, style: "header" },
 
         { text: "Dane Sprzedawcy", style: "subheader" },
-        { text: `Nazwa: ${nazwa_firmy}`, margin: [0, 2, 0, 2] },
-        { text: `NIP: ${nip_firmy}`, margin: [0, 2, 0, 10] },
+        { text: `Nazwa: ${formData.nazwa_firmy}`, margin: [0, 2, 0, 2] },
+        { text: `NIP: ${formData.nip_firmy}`, margin: [0, 2, 0, 10] },
 
         { text: "Dane Kontrahenta", style: "subheader" },
-        { text: `Nazwa: ${nazwa_kontrahenta}`, margin: [0, 2, 0, 2] },
-        { text: `NIP: ${nip_kontrahenta}`, margin: [0, 2, 0, 10] },
+        { text: `Nazwa: ${formData.nazwa_kontrahenta}`, margin: [0, 2, 0, 2] },
+        { text: `NIP: ${formData.nip_kontrahenta}`, margin: [0, 2, 0, 10] },
 
         { text: "Szczegóły Faktury", style: "subheader" },
-        { text: `Numer Faktury: ${numer_faktury}`, margin: [0, 2, 0, 2] },
-        { text: `Data Wystawienia: ${data_faktury}`, margin: [0, 2, 0, 10] },
+        {
+          text: `Numer Faktury: ${formData.numer_faktury}`,
+          margin: [0, 2, 0, 2],
+        },
+        {
+          text: `Data Wystawienia: ${formData.data_faktury}`,
+          margin: [0, 2, 0, 10],
+        },
 
         {
           style: "tableExample",
@@ -84,12 +91,12 @@ const FormFakturka = () => {
                 { text: "Kwota Brutto", style: "tableHeader" },
               ],
               [
-                nazwa_uslugi,
-                kwota_netto,
-                `${parseFloat(stawka_vat) * 100}%`,
+                formData.nazwa_uslugi,
+                formData.kwota_netto,
+                `${parseFloat(formData.stawka_vat) * 100}%`,
                 (
-                  parseFloat(kwota_netto) *
-                  (1 + parseFloat(stawka_vat))
+                  parseFloat(formData.kwota_netto) *
+                  (1 + parseFloat(formData.stawka_vat))
                 ).toFixed(2), // Obliczona kwota brutto
               ],
             ],
@@ -133,7 +140,7 @@ const FormFakturka = () => {
 
     pdfMake
       .createPdf(docDefinition)
-      .download(`${nazwa_kontrahenta}_${numer_faktury}.pdf`);
+      .download(`${formData.nazwa_kontrahenta}_${formData.numer_faktury}.pdf`);
   };
 
   return (
@@ -154,8 +161,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="967-92-38-136"
                 className="input input-bordered w-full max-w-xs"
-                value={nip_firmy}
-                onChange={(event) => handleChange(event, setNipFirmy)}
+                name="nip_firmy"
+                value={formData.nip_firmy}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -169,8 +177,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="Moja Firma Sp. z o.o."
                 className="input input-bordered w-full max-w-xs"
-                value={nazwa_firmy}
-                onChange={(event) => handleChange(event, setNazwaFirmy)}
+                name="nazwa_firmy"
+                value={formData.nazwa_firmy}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -184,8 +193,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="967-92-38-136"
                 className="input input-bordered w-full max-w-xs"
-                value={nip_kontrahenta}
-                onChange={(event) => handleChange(event, setNip)}
+                name="nip_kontrahenta"
+                value={formData.nip_kontrahenta}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -199,8 +209,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="Kowalski Big Biznes Sp. z o. o."
                 className="input input-bordered w-full max-w-xs"
-                value={nazwa_kontrahenta}
-                onChange={(event) => handleChange(event, setNazwaKontrahenta)}
+                name="nazwa_kontrahenta"
+                value={formData.nazwa_kontrahenta}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -214,8 +225,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="Sprzedaż oprogramowania"
                 className="input input-bordered w-full max-w-xs"
-                value={nazwa_uslugi}
-                onChange={(event) => handleChange(event, setNazwaUslugi)}
+                name="nazwa_uslugi"
+                value={formData.nazwa_uslugi}
+                onChange={handleRealChange}
               />
             </label>
           </div>
@@ -231,8 +243,9 @@ const FormFakturka = () => {
                 type="text"
                 placeholder="2025/5/1"
                 className="input input-bordered w-full max-w-xs"
-                value={numer_faktury}
-                onChange={(event) => handleChange(event, setNumerFaktury)}
+                name="numer_faktury"
+                value={formData.numer_faktury}
+                onChange={handleRealChange}
               />
             </label>
             {/* Kwota netto */}
@@ -247,8 +260,9 @@ const FormFakturka = () => {
                 step="0.01"
                 min="0"
                 className="input input-bordered w-full max-w-xs"
-                value={kwota_netto}
-                onChange={(event) => handleChange(event, setKwotaNetto)}
+                name="kwota_netto"
+                value={formData.kwota_netto}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -265,8 +279,9 @@ const FormFakturka = () => {
                 min="0"
                 max="1"
                 className="input input-bordered w-full max-w-xs"
-                value={stawka_vat}
-                onChange={(event) => handleChange(event, setStawkaVat)}
+                name="stawka_vat"
+                value={formData.stawka_vat}
+                onChange={handleRealChange}
               />
             </label>
 
@@ -279,8 +294,9 @@ const FormFakturka = () => {
                 required
                 type="date"
                 className="input input-bordered w-full max-w-xs"
-                value={data_faktury}
-                onChange={(event) => handleChange(event, setDataFaktury)}
+                name="data_faktury"
+                value={formData.data_faktury}
+                onChange={handleRealChange}
               />
             </label>
           </div>
