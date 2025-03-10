@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const FormNewBoard = () => {
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,6 +19,9 @@ const FormNewBoard = () => {
       const data = await axios.post("/api/board", {
         name: name,
       });
+      toast.success("New board added.");
+      router.refresh();
+
       // console.log(data);
       setName("");
     } catch (e) {
