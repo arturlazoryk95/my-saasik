@@ -11,6 +11,12 @@ const boardSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+    },
+  ],
 });
 
 export default mongoose.models.Board || mongoose.model("Board", boardSchema);
