@@ -4,11 +4,14 @@ import Post from "@/models/Post";
 import Board from "@/models/Board";
 import { auth } from "@/auth";
 
+import { Filter } from "bad-words";
+
 export async function POST(req) {
+  const filter = new Filter();
   const body = await req.json();
-  if (!body.boardId || !body.title || !body.name || !body.description) {
+  if (!body.boardId || !body.title || !body.content) {
     return NextResponse.json(
-      { error: "The board's name is required" },
+      { error: "The board's params r required" },
       { status: 400 }
     );
   }
@@ -18,13 +21,13 @@ export async function POST(req) {
     const board = await Board.findById(body.boardId);
     const new_post = await Post.create({
       boardId: body.boardId,
-      title: body.title,
-      content: body.content,
-      numberOfVotes: 0,
+      title: filter.clean(body.title),
+      content: filter.clean(body.content),
+      numberOfVotes: 1,
       userId: session?.user?.id,
     });
-    board.push(new_post);
-    board.save();
+    board.posts.push(new_post._id);
+    await board.save();
     return NextResponse.json(new_post);
   } catch (e) {
     return NextResponse.json({
