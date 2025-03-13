@@ -26,16 +26,20 @@ async function PublicBoard(props) {
   const { board, posts } = await getData(props.params.boardId);
 
   return (
-    <main className="max-w-5xl bg-base-200 mx-auto">
-      <div>{board.name} (public)</div>
-      <div className="flex gap-6 ">
-        <FormAddPost boardId={board._id} />
-        <ul className="space-y-3">
+    <main className="min-h-screen bg-base-200">
+      <section className="max-w-5xl mx-auto px-5">
+        <div className=" text-lg font-bold p-5">{board.name}</div>
+      </section>
+      <section className="max-w-5xl mx-auto px-5 flex flex-col md:flex-row gap-8 pb-12">
+        {/* <div className="flex gap-6 "> */}
+        <FormAddPost boardId={board._id} className="shrink-0" />
+        <ul className="space-y-4 flex-grow">
           {posts.map((post) => {
             return <CardPost key={post._id} post={post} />;
           })}
         </ul>
-      </div>
+      </section>
+      {/* </div> */}
     </main>
   );
 }

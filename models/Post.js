@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
     content: {
       type: String,
       trim: true,
-      maxlength: 500,
+      maxlength: 51100,
     },
     numberOfVotes: {
       type: Number,

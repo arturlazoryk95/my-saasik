@@ -38,7 +38,7 @@ const FormAddPost = ({ boardId }) => {
 
   return (
     <form
-      className="bg-base-100 p-8 rounded-3xl space-y-8"
+      className="bg-base-100 p-8 rounded-3xl space-y-8 w-full md:w-96 shrink-0"
       onSubmit={handleSubmit}
     >
       {/* Title */}
