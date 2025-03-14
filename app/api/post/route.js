@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Post from "@/models/Post";
 import Board from "@/models/Board";
 import { auth } from "@/auth";
+import User from "@/models/User";
 
 import { Filter } from "bad-words";
 
@@ -34,5 +35,43 @@ export async function POST(req) {
       error: e.message || "Some error ?",
       status: 500,
     });
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    const { postId } = await req.json();
+    if (!postId) {
+      return NextResponse.json(
+        { error: "postId is required" },
+        { status: 401 }
+      );
+    }
+
+    const session = await auth();
+
+    if (!session) {
+      return NextResponse.json({ error: "Not authorized" }, { status: 401 });
+    }
+    await connectMongo();
+    const post = await Post.findById(postId);
+    const user = await User.findById(session?.user?.id);
+
+    if (!user.boards.includes(post.boardId.toString())) {
+      return NextResponse.json({ error: "not authorized" }, { status: 501 });
+    }
+
+    await Post.deleteOne({
+      _id: postId,
+    });
+
+    return NextResponse.json({ message: "Post deleted." });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: e.message,
+      },
+      { status: 500 }
+    );
   }
 }
