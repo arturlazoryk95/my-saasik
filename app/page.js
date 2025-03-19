@@ -82,7 +82,7 @@ export default async function Home() {
             A pricing that adapts to your needs
           </h2>
           <div className="flex gap-4">
-            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl over:scale-150 hover:blur-xl hover:opacity-0 transition duration-500 ease-in-out">
               <div className="flex gap-2 items-baseline mb-4">
                 <div className="font-black text-4xl">$100</div>
                 <div className="font-medium uppercase opacity-60">/month</div>
@@ -109,7 +109,7 @@ export default async function Home() {
                 </li>
               </ul>
             </div>
-            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl hover:animate-[rainbowboom_0.7s_linear_infinite]">
               <div className="flex gap-2 items-baseline mb-4">
                 <div className="font-black text-4xl">$800</div>
                 <div className="font-medium uppercase opacity-60">/month</div>
@@ -138,7 +138,7 @@ export default async function Home() {
                 </li>
               </ul>
             </div>
-            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl">
+            <div className="bg-base-100 p-8 m-10 mx-auto max-w-96 rounded-3xl hover:animate-[matrixglitch_0.3s_steps(2)_infinite]">
               <div className="flex gap-2 items-baseline mb-4">
                 <div className="font-black text-4xl">$1,000</div>
                 <div className="font-medium uppercase opacity-60">/month</div>
