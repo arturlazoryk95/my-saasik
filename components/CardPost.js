@@ -6,11 +6,19 @@ import { useRouter } from "next/navigation";
 
 const CardPost = ({ post }) => {
   const router = useRouter();
+  const localStorageKeyName = `my-sassik-hasVoted-${post._id}`;
+
   const handleAdd = async () => {
+    const hasVoted = localStorage.getItem(localStorageKeyName);
     try {
-      await axios.post("/api/vote", { postId: post._id });
-      toast.success("Vote added!");
-      router.refresh();
+      if (hasVoted !== "true") {
+        toast.success("Vote added!");
+        localStorage.setItem(localStorageKeyName, "true");
+        await axios.post("/api/vote", { postId: post._id });
+        router.refresh();
+      } else {
+        toast.error("Already voted ... ");
+      }
     } catch (error) {
       toast.error("Failed to add vote!");
       console.error("Error voting:", error);
